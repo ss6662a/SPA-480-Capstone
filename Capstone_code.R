@@ -53,7 +53,19 @@ FSI_full <- bind_rows(FSI_2006,
 # pivot_longer regime_change df
 # figure wtf happened with the GDP df
 
+RAI <- RAI %>%
+  rename(Year = 'year',
+         Country = 'country_name')
 
+
+
+regime_change_longer <- regime_change %>%
+  pivot_longer(
+    cols = !(`Economy ISO3`:Partner),
+    names_to = 'Year'
+    ) %>%
+  rename(Country = 'Economy Name') %>%
+  mutate(Year = as.numeric(Year)) #Year is a character, this changes it so I can join the data together
 
 
 
@@ -62,8 +74,9 @@ FSI_full <- bind_rows(FSI_2006,
 
 
 
-full_data <- left_join(FSI_full, RAI, by = c("Country", "Year")) %>%
-  left_join(full_data) # need to finish
+full_data <- left_join(FSI_full, RAI, by = c("Country", "Year"))
+
+left_join(full_data, regime_change_longer, by = c("Country", "Year")) # make sure it's doing what I want
 
 
 # Synth Stuff trying to get the treatment and control groups----
