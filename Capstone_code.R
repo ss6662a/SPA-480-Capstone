@@ -1,12 +1,14 @@
 library(tidyverse)
 library(here)
+library(Synth)
 here::here()
 
 
 # Importing Data ----
 RAI <- read_csv("SPA-480 Data/RAI_country-april-2021.csv")
-regime_change <- read_csv("SPA-480 Data/Political-Regime-Data.csv")
+regime_change <- read_csv("SPA-480 Data/Political-Regime_Data.csv")
 GDP_per_cap <- read_csv("SPA-480 Data/GDP-per-capita_World-Bank.csv")
+ethnic_frac <- read_csv("SPA-480 Data/Ethnic-Fractionalization_Data.csv")
 
 # Fragile States Index csv files ----
 FSI_2006 <- read_csv("SPA-480 Data/Fragile States Index/FSI-2006.csv")
@@ -75,11 +77,13 @@ regime_change_longer <- regime_change %>%
 
 
 full_data <- left_join(FSI_full, RAI, by = c("Country", "Year"))
-
-left_join(full_data, regime_change_longer, by = c("Country", "Year")) # make sure it's doing what I want
-
+full_data <- left_join(full_data, regime_change_longer, by = c("Country", "Year")) # make sure it's doing what I want
+full_data <- left_join(full_data, ethnic_frac, by = c("Country", "Year"))
 
 # Synth Stuff trying to get the treatment and control groups----
+
+# need to use dataprep() to prep the data than can perform Synthetic control tests
+
 
 
 
