@@ -7,7 +7,7 @@ here::here()
 # Importing Data ----
 RAI <- read_csv("SPA-480 Data/RAI_country-april-2021.csv")
 regime_change <- read_csv("SPA-480 Data/Political-Regime_Data.csv")
-GDP_per_cap <- read_csv("SPA-480 Data/GDP-per-capita_World-Bank.csv")
+GDP_per_cap <- read_csv("SPA-480 Data/GDP-per-cap_WB.csv")
 ethnic_frac <- read_csv("SPA-480 Data/Ethnic-Fractionalization_Data.csv")
 
 # Fragile States Index csv files ----
@@ -29,6 +29,7 @@ FSI_2020 <- read_csv("SPA-480 Data/Fragile States Index/FSI-2020.csv")
 FSI_2021 <- read_csv("SPA-480 Data/Fragile States Index/FSI-2021.csv")
 FSI_2022 <- read_csv("SPA-480 Data/Fragile States Index/FSI-2022.csv")
 FSI_2023 <- read_csv("SPA-480 Data/Fragile States Index/FSI-2023.csv")
+
 
 FSI_full <- bind_rows(FSI_2006,
                       FSI_2007,
@@ -57,9 +58,13 @@ FSI_full <- bind_rows(FSI_2006,
 
 RAI <- RAI %>%
   rename(Year = 'year',
-         Country = 'country_name')
-
-
+         Country = 'country_name') %>%
+  select(c("Country",
+           "Year",
+           "n_selfrule",
+           "n_sharedrule",
+           "n_RAI")
+         )
 
 regime_change_longer <- regime_change %>%
   pivot_longer(
@@ -67,10 +72,27 @@ regime_change_longer <- regime_change %>%
     names_to = 'Year'
     ) %>%
   rename(Country = 'Economy Name') %>%
-  mutate(Year = as.numeric(Year)) #Year is a character, this changes it so I can join the data together
+  mutate(Year = as.numeric(Year)) %>%#Year is a character, this changes it so I can join the data together
+  select(c("Country",
+           "Year",
+           "value")
+         )
 
+FSI_full <- FSI_full %>%
+  select(c("Country", 
+           "Year", 
+           "P1: State Legitimacy"))
 
-
+GDP_per_cap <- GDP_per_cap %>%
+  select(!c("Series Name",
+            "Series Code",
+            "Country Code")) %>%
+  pivot_longer(
+    cols = !(`Country Name`),
+    names_to = "Year"
+  ) %>%
+  mutate(
+    Year = str_extract(Year, "^\\d{4}"))
 
 # Joining Data-sets Together----
 
