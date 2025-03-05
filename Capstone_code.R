@@ -103,8 +103,9 @@ full_data <- reduce(
 # Ensure correct data types
 full_data2 <- full_data %>%
   mutate(
-    country = as.factor(country),  # Convert to factor
-    year = as.numeric(year)        # Convert to numeric
+    country = as.factor(country),
+    year = as.numeric(year),
+    gdp = as.numeric(str_replace_all(gdp, ",", ""))
   ) %>%
   arrange(country, year) %>%  # Ensure data is sorted
   distinct(country, year, .keep_all = TRUE) %>%  # Remove duplicates
@@ -124,7 +125,7 @@ gsynth_out <- gsynth(
   index = c("country", "year"),
   force = "two-way",  # Includes country & time fixed effects
   CV = TRUE,          # Cross-validation for tuning
-  r = 2        # Factor model (auto-selects)
+  r = 2
   )
 plot(gsynth_out)
 
@@ -133,6 +134,6 @@ full_data2 %>%
   filter(!is.finite(n_rai) | is.na(n_rai) | is.character(n_rai) | is.factor(n_rai)) %>%
   print(n = 20)  # Show up to 20 problem rows
 
-
+head(full_data2, 10)
 
 
