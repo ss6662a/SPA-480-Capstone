@@ -1,5 +1,3 @@
-library(tidyverse)
-library(here)
 
 here()
 

@@ -8,44 +8,103 @@ editor:
     wrap: sentence
 ---
 
+```{r}
+library(tidyverse)
+library(purrr)
+library(here)
+library(Synth)
+library(gsynth)
+library(mice)
+library(panelView)
+```
+
 # Literature Review
 
 ## Introduction
 
-As new governments are beginning to form and established states are seeking to appease their citizens, the question of legitimacy takes center stage. Legitimacy is constantly sought by those in power to justify their exercise of authority (Barker 1990a). At its core, legitimacy is what rulers seek to earn from those they govern in order to maintain their continued rule, which is why it is crucial when examining power and authority in the world to also look at legitimacy. 
+As new governments are beginning to form and established states are seeking to appease their citizens, the question of legitimacy takes center stage.
+Legitimacy is constantly sought by those in power to justify their exercise of authority (Barker 1990a).
+At its core, legitimacy is what rulers seek to earn from those they govern in order to maintain their continued rule, which is why it is crucial when examining power and authority in the world to also look at legitimacy.
 
-Most research surrounding legitimacy is theory-based, non-empirical research. The goal of this paper is to add more to the conversation around legitimacy by providing an empirical basis for the level of legitimacy experienced in different countries. Our research question is, Why are some states considered more legitimate than others? To answer this question, we will examine periods of change in regional authority using a synthetic control model to determine a casual relationship between regional authority and legitimacy.
+Most research surrounding legitimacy is theory-based, non-empirical research.
+The goal of this paper is to add more to the conversation around legitimacy by providing an empirical basis for the level of legitimacy experienced in different countries.
+Our research question is, Why are some states considered more legitimate than others?
+To answer this question, we will examine periods of change in regional authority using a synthetic control model to determine a casual relationship between regional authority and legitimacy.
 
-We argue that decentralization explains the differences in legitimacy in different states because decentralization brings politics into closer relation with the population base, promoting an increase in legitimacy levels. Our project will expand upon the empirical research done in assessing legitimacy and decentralization in different countries by using a synthetic control model to determine a causal relationship. This test will give a better understanding of whether decentralizing actually produces more legitimacy. Using this model also gives us a chance to account for new, possible control variables such as homogeneity, external threats, and age of the system of government.
+We argue that decentralization explains the differences in legitimacy in different states because decentralization brings politics into closer relation with the population base, promoting an increase in legitimacy levels.
+Our project will expand upon the empirical research done in assessing legitimacy and decentralization in different countries by using a synthetic control model to determine a causal relationship.
+This test will give a better understanding of whether decentralizing actually produces more legitimacy.
+Using this model also gives us a chance to account for new, possible control variables such as homogeneity, external threats, and age of the system of government.
 
 ## What is legitimacy and how do we define it?
 
-Legitimacy is a complex concept that has various definitions, but there are a few concepts that are uniquely key to understanding how legitimacy is viewed in any given state. Legitimacy is ultimately the perception of a government, but determining the legitimacy of a state and how a state becomes legitimate is more difficult. One reason for that is the unique historical context of any given place needs to be taken into account (Beetham 1991c).
+Legitimacy is a complex concept that has various definitions, but there are a few concepts that are uniquely key to understanding how legitimacy is viewed in any given state.
+Legitimacy is ultimately the perception of a government, but determining the legitimacy of a state and how a state becomes legitimate is more difficult.
+One reason for that is the unique historical context of any given place needs to be taken into account (Beetham 1991c).
 
-First, legitimacy is entirely based on the perception of the subjects of any given authority. There are slight nuances between subjects and citizens (Barker 1990a), but most definitions of legitimacy require that there be an audience as legitimacy relies on the perception of people of a government or other object (Schoon 2022). Additionally, legitimacy is conferred to a social object by the audience; the government is evaluated by its citizens (Schoon 2022). Legitimacy is, at its core, the summary of how subordinates feel about those in power (Beetham 1991c). Beetham views legitimacy as how well it conforms to an established set of rules dictated by the historical context (Beetham 1991c). If power is established within the confines of beliefs held by both the dominant and subordinate, the power is legitimate.
+First, legitimacy is entirely based on the perception of the subjects of any given authority.
+There are slight nuances between subjects and citizens (Barker 1990a), but most definitions of legitimacy require that there be an audience as legitimacy relies on the perception of people of a government or other object (Schoon 2022).
+Additionally, legitimacy is conferred to a social object by the audience; the government is evaluated by its citizens (Schoon 2022).
+Legitimacy is, at its core, the summary of how subordinates feel about those in power (Beetham 1991c).
+Beetham views legitimacy as how well it conforms to an established set of rules dictated by the historical context (Beetham 1991c).
+If power is established within the confines of beliefs held by both the dominant and subordinate, the power is legitimate.
 
-When looking at the political theory of legitimization, a key factor that emerges is the source of legitimate power. There are external factors that are expressed from within the state. These are often accompanied by a strong sense of identity among the nation (Barker 1990a). Revolutions, ethnicity, or an electorate are examples of how an external source is expressed by the state. Another source of legitimacy could be from the divine, or a god (Beetham 1991b). The state, however, is usually not a source of legitimacy for itself. The state cannot cultivate legitimacy because legitimacy relies on economic and social ties between the subjects (Barker 1990b). All states can try to do is increase a sense of legitimacy by strengthening those ties (Barker 1990b).
+When looking at the political theory of legitimization, a key factor that emerges is the source of legitimate power.
+There are external factors that are expressed from within the state.
+These are often accompanied by a strong sense of identity among the nation (Barker 1990a).
+Revolutions, ethnicity, or an electorate are examples of how an external source is expressed by the state.
+Another source of legitimacy could be from the divine, or a god (Beetham 1991b).
+The state, however, is usually not a source of legitimacy for itself.
+The state cannot cultivate legitimacy because legitimacy relies on economic and social ties between the subjects (Barker 1990b).
+All states can try to do is increase a sense of legitimacy by strengthening those ties (Barker 1990b).
 
 ## Why and how was decentralization applied in different countries?
 
-Legitimacy is based on the uniqueness of a historical context and the individual relationships between economic and social ties, so the discussion around decentralization and regional authority manifests. Decentralization, especially at the turn of the century after the 9/11 terrorist attacks, was theorized to foster an increased sense of legitimacy because the public was more engaged in the political process (Siegel 2022). Decentralization, in theory, brings the political process and the ability to impact institutions closer to each citizen, and promotes a greater sense of legitimacy in those institutions. Allowing citizens to have greater participation in the democratic process can close the ‘satisfaction-gap’ between electoral winners and losers (Leemann and Stadelmann-Steffen 2022). So, if decentralization causes the population to be more politically involved, the satisfaction-gap will close, theoretically resulting in greater legitimacy to the state as the social ties grow stronger.
+Legitimacy is based on the uniqueness of a historical context and the individual relationships between economic and social ties, so the discussion around decentralization and regional authority manifests.
+Decentralization, especially at the turn of the century after the 9/11 terrorist attacks, was theorized to foster an increased sense of legitimacy because the public was more engaged in the political process (Siegel 2022).
+Decentralization, in theory, brings the political process and the ability to impact institutions closer to each citizen, and promotes a greater sense of legitimacy in those institutions.
+Allowing citizens to have greater participation in the democratic process can close the ‘satisfaction-gap’ between electoral winners and losers (Leemann and Stadelmann-Steffen 2022).
+So, if decentralization causes the population to be more politically involved, the satisfaction-gap will close, theoretically resulting in greater legitimacy to the state as the social ties grow stronger.
 
-However, what was seen in developing countries is that decentralization caused significantly different results in different countries (Siegel 2022). In Turkey, decentralization did not produce the expected results of democratizing the country (Alkan 2011). Siegel’s case study in post-Soviet Kyrgyzstan was slightly different in that the most meaningful democratic changes occurred at the local level (Siegel 2022). However, Siegel also noted that as trust in the local governments grew, distrust in the central government grew as well (Siegel 2022). In looking at countries in Europe with more established democracies, what was found was that when citizens feel more politically incorporated locally, they have a greater sense of legitimacy in higher levels of government (Vetter 2002). Ultimately, Siegel’s research supports some of the original theories that with an increase in citizen participation, political legitimacy and democratization would be increased (2022).
+However, what was seen in developing countries is that decentralization caused significantly different results in different countries (Siegel 2022).
+In Turkey, decentralization did not produce the expected results of democratizing the country (Alkan 2011).
+Siegel’s case study in post-Soviet Kyrgyzstan was slightly different in that the most meaningful democratic changes occurred at the local level (Siegel 2022).
+However, Siegel also noted that as trust in the local governments grew, distrust in the central government grew as well (Siegel 2022).
+In looking at countries in Europe with more established democracies, what was found was that when citizens feel more politically incorporated locally, they have a greater sense of legitimacy in higher levels of government (Vetter 2002).
+Ultimately, Siegel’s research supports some of the original theories that with an increase in citizen participation, political legitimacy and democratization would be increased (2022).
 
-One particular case is Belgium, which has transformed from a unitary state to a federal one (Fabre 2009). By decentralizing the economics of the state, the regions had more autonomy over where to spend their resources with little oversight from the federal government (Fabre 2009). This fiscal federalism or decentralization is shown to have positive effects on economic outcomes such as Gross Domestic Product (GDP), productivity, and school performance (Blöchliger 2013). Additional research done in Switzerland, Austria, Denmark, and Ireland saw decentralization compel different actors to vary service delay and enhance efficiency (Biela, Hennl, and Kaiser 2012). Since legitimacy is often tied to the social and economic relationships among citizens, an increase in economic development caused by decentralization suggests that regional authority can provide a way to predict legitimacy.
+One particular case is Belgium, which has transformed from a unitary state to a federal one (Fabre 2009).
+By decentralizing the economics of the state, the regions had more autonomy over where to spend their resources with little oversight from the federal government (Fabre 2009).
+This fiscal federalism or decentralization is shown to have positive effects on economic outcomes such as Gross Domestic Product (GDP), productivity, and school performance (Blöchliger 2013).
+Additional research done in Switzerland, Austria, Denmark, and Ireland saw decentralization compel different actors to vary service delay and enhance efficiency (Biela, Hennl, and Kaiser 2012).
+Since legitimacy is often tied to the social and economic relationships among citizens, an increase in economic development caused by decentralization suggests that regional authority can provide a way to predict legitimacy.
 
-Research done by Bastianen and Keuffer in 57 countries in Europe and elsewhere in 2024 shows the relationship between regional autonomy and legitimacy. Bastianen and Keurffer find that the normative claims to promote decentralization are positive, but local autonomy does not impact all of the legitimacy indicators.
+Research done by Bastianen and Keuffer in 57 countries in Europe and elsewhere in 2024 shows the relationship between regional autonomy and legitimacy.
+Bastianen and Keurffer find that the normative claims to promote decentralization are positive, but local autonomy does not impact all of the legitimacy indicators.
 Their research is similar to what this project does, however, I control for different variables and use a different set of data to hopefully better understand legitimacy.
 
 ## Other factors that could impact legitimacy
 
-It would be foolish to assume that decentralization acts in isolation on legitimacy. Apart from decentralization, there are a few key understandings of what can affect legitimacy.
+It would be foolish to assume that decentralization acts in isolation on legitimacy.
+Apart from decentralization, there are a few key understandings of what can affect legitimacy.
 
-The first is the idea that legitimacy is based on the established norms of a given society (Beetham 1991c). Thus, taking the age of the system of government in the state would be a good way to account for legitimacy being established by the established set of rules. An established democracy experiences different results in legitimacy than a non-democratic country (Kriesi 2013). Older countries experience greater legitimacy than newer countries due to the established norms. Kriesi found that there is a significant difference in the trend of legitimacy in established democracies where the level fluctuates over an equilibrium than in newly democratizing states (Kriesi 2013). The differences in new and established states will need to be controlled for in our analysis.
+The first is the idea that legitimacy is based on the established norms of a given society (Beetham 1991c).
+Thus, taking the age of the system of government in the state would be a good way to account for legitimacy being established by the established set of rules.
+An established democracy experiences different results in legitimacy than a non-democratic country (Kriesi 2013).
+Older countries experience greater legitimacy than newer countries due to the established norms.
+Kriesi found that there is a significant difference in the trend of legitimacy in established democracies where the level fluctuates over an equilibrium than in newly democratizing states (Kriesi 2013).
+The differences in new and established states will need to be controlled for in our analysis.
 
-Since power has a need to be legitimized (Beetham 1991a), states will try to promote legitimacy by strengthening the economic and social ties between subjects (Barker 1990a). The three promotional techniques that were discussed earlier, are often put into full effect when there is an external threat (Barker 1990a). Legitimacy changes as the population reacts to their norms being threatened. For example, legitimacy often improves when there is a clear external threat, but the idea of threats can, and often are, used to discredit and delegitimize political opposition (Barker 1990b). The use of external threats to assert legitimization by a state is something that can occur, and we will ensure that we will control for external threats when running analysis.
+Since power has a need to be legitimized (Beetham 1991a), states will try to promote legitimacy by strengthening the economic and social ties between subjects (Barker 1990a).
+The three promotional techniques that were discussed earlier, are often put into full effect when there is an external threat (Barker 1990a).
+Legitimacy changes as the population reacts to their norms being threatened.
+For example, legitimacy often improves when there is a clear external threat, but the idea of threats can, and often are, used to discredit and delegitimize political opposition (Barker 1990b).
+The use of external threats to assert legitimization by a state is something that can occur, and we will ensure that we will control for external threats when running analysis.
 
-We will also control for homogeneity within a state. As mentioned, one factor for forming legitimacy can be an ethnic, religious, or shared heritage among a group of people. In Belgium, they federalized the country, not only by territory, but also by language communities (Fabre 2009). The state with a homogenous population may have a stronger connection to the state and see it as more legitimate.
+We will also control for homogeneity within a state.
+As mentioned, one factor for forming legitimacy can be an ethnic, religious, or shared heritage among a group of people.
+In Belgium, they federalized the country, not only by territory, but also by language communities (Fabre 2009).
+The state with a homogenous population may have a stronger connection to the state and see it as more legitimate.
 Thus, we will control for the homogeneity of the states in our research.
 
 Another important variable to control for is economic growth.
@@ -53,47 +112,85 @@ Countries with a larger GDP per capita are likely to be more satisfied with the 
 
 ## What will this research tell us about legitimacy?
 
-This research will try to explain the differences we see in legitimacy across various states. Much of the current research has a gap in looking at regional autonomy and legitimacy in context with other potential explanatory factors. This project empirically tests the theories of legitimacy. Our hypothesis is that in comparing countries, those having greater regional authority will be more likely to have higher levels of legitimacy than those having lower levels of regional authority.
+This research will try to explain the differences we see in legitimacy across various states.
+Much of the current research has a gap in looking at regional autonomy and legitimacy in context with other potential explanatory factors.
+This project empirically tests the theories of legitimacy.
+Our hypothesis is that in comparing countries, those having greater regional authority will be more likely to have higher levels of legitimacy than those having lower levels of regional authority.
 
-# Study Design 
+# Study Design
 
 ## Theory and Expectations
 
-After researching legitimacy and decentralization we make the hypothesis: In comparing countries, those having greater regional authority will be more likely to have higher levels of legitimacy than those having lower levels of regional authority. Based on what we know about legitimacy, authority is a main factor in determining legitimacy (Beetham 1991; Barker 1990a). Authority used to exert force on the subjects or to grant their needs is crucial to gaining legitimacy. We expect our dependent variable, legitimacy, to be impacted by the level of authority able to be exerted over the citizens, and that they exert authority over individuals by influencing economic and social ties (Barker 1990b). With the increase in authority, we expect the power to be viewed as more legitimate (Beetham 1991).
+After researching legitimacy and decentralization we make the hypothesis: In comparing countries, those having greater regional authority will be more likely to have higher levels of legitimacy than those having lower levels of regional authority.
+Based on what we know about legitimacy, authority is a main factor in determining legitimacy (Beetham 1991; Barker 1990a).
+Authority used to exert force on the subjects or to grant their needs is crucial to gaining legitimacy.
+We expect our dependent variable, legitimacy, to be impacted by the level of authority able to be exerted over the citizens, and that they exert authority over individuals by influencing economic and social ties (Barker 1990b).
+With the increase in authority, we expect the power to be viewed as more legitimate (Beetham 1991).
 
-Scholars have studied regional parliamentary assemblies in Africa and found that without the institutional frameworks to impact social, economic, and political development, they saw a lack of legitimacy (Ogbonnaya and Ogujiuba 2015). Ogbonnaya and Ogujiuba recommend empowering regional legislatures to have authority to affect areas of importance such as control over the regional budget and oversight over the regional economic communities. This study puts the ideas of legitimacy being reliant on authority over factors that influence those who determine the legitimacy of an object, and what we can theorize from this study is that authority with more control over these ties will have increased legitimacy.
+Scholars have studied regional parliamentary assemblies in Africa and found that without the institutional frameworks to impact social, economic, and political development, they saw a lack of legitimacy (Ogbonnaya and Ogujiuba 2015).
+Ogbonnaya and Ogujiuba recommend empowering regional legislatures to have authority to affect areas of importance such as control over the regional budget and oversight over the regional economic communities.
+This study puts the ideas of legitimacy being reliant on authority over factors that influence those who determine the legitimacy of an object, and what we can theorize from this study is that authority with more control over these ties will have increased legitimacy.
 
-The expectation of our hypothesis is that there will be more citizen participation when the level of regional authority is increased. Research studies have shown that when citizens participate in governance and feel they have more effect over their government, they perceive the government as more legitimate (Siegel 2022; Vetter 2002). Thus, when authority is decentralized, and there is a regional government capable of impacting citizens at a level closer to them than the national government, we expect the citizens’ perception of government legitimacy to increase.
+The expectation of our hypothesis is that there will be more citizen participation when the level of regional authority is increased.
+Research studies have shown that when citizens participate in governance and feel they have more effect over their government, they perceive the government as more legitimate (Siegel 2022; Vetter 2002).
+Thus, when authority is decentralized, and there is a regional government capable of impacting citizens at a level closer to them than the national government, we expect the citizens’ perception of government legitimacy to increase.
 
-What we saw from the literature was that an increased regional authority led to positive results in the economy, political satisfaction, and efficiency (Blöchliger 2013; Biela, Hennl, and Kaiser 2012). One example of this is Bastianen and Keuffer’s paper on local authority and legitimacy, which found the normative rationales justified between the two variables (Bastianen and Keuffer 2024). Thus, given the conclusions of much of the literature, we can infer that our hypothesis will stand true.
+What we saw from the literature was that an increased regional authority led to positive results in the economy, political satisfaction, and efficiency (Blöchliger 2013; Biela, Hennl, and Kaiser 2012).
+One example of this is Bastianen and Keuffer’s paper on local authority and legitimacy, which found the normative rationales justified between the two variables (Bastianen and Keuffer 2024).
+Thus, given the conclusions of much of the literature, we can infer that our hypothesis will stand true.
 
-## Research Design 
+## Research Design
 
 To test our hypothesis, we will use a synthetic control test to examine the causal relationship between regional authority and legitimacy.
-We will create a control group using a weighted formula based on several key control variables. This will allow us to evaluate the impact of regional authority over time with legitimacy, while seeing if the control variables are explanatory in any way.
+We will create a control group using a weighted formula based on several key control variables.
+This will allow us to evaluate the impact of regional authority over time with legitimacy, while seeing if the control variables are explanatory in any way.
 
-Our data on regional authority comes from the Regional Authority Index (RAI) (Shair-Rosenfield et al. 2021; Hooghe 2016). It includes annual scoring of regional governments in self-rule and shared-rule, which combined make up the regional authority index score. The data includes 91 countries from the years 1950 to 2018.
+Our data on regional authority comes from the Regional Authority Index (RAI) (Shair-Rosenfield et al. 2021; Hooghe 2016).
+It includes annual scoring of regional governments in self-rule and shared-rule, which combined make up the regional authority index score.
+The data includes 91 countries from the years 1950 to 2018.
 
-We gather our data on legitimacy from The Fund for Peace’s Fragile States Index (FSI), which is an annual ranking of state fragility of 178 countries (“Fragile States Index,” n.d.). One of the indicators used in this ranking is state legitimacy, which is what we will be using as our dependent variable.
-For our control on homogeneity, we will use a data set on ethnic diversity in different countries (Drazanova 2020). It looks at 162 countries between 1945-2013. Additionally, we will use the Political Regime Characteristics Database (Marshall 2024), which covers changes in regime in countries with a population above 500,000 between 1776 and 2020. We also use Gross Domestic Product (GDP) data from the World Bank, which includes the GDP per capita of countries from 1960-2023 (“GDP per Capita (Current US\$),” n.d.). To look at the threats faced by a country, we will use the Global Terrorism Database, which looks at terrorist events from 1970 to 2020 from around the world (LaFree, Dugan, and Miller, n.d.).
+We gather our data on legitimacy from The Fund for Peace’s Fragile States Index (FSI), which is an annual ranking of state fragility of 178 countries (“Fragile States Index,” n.d.).
+One of the indicators used in this ranking is state legitimacy, which is what we will be using as our dependent variable.
+For our control on homogeneity, we will use a data set on ethnic diversity in different countries (Drazanova 2020).
+It looks at 162 countries between 1945-2013.
+Additionally, we will use the Political Regime Characteristics Database (Marshall 2024), which covers changes in regime in countries with a population above 500,000 between 1776 and 2020.
+We also use Gross Domestic Product (GDP) data from the World Bank, which includes the GDP per capita of countries from 1960-2023 (“GDP per Capita (Current US\$),” n.d.).
+To look at the threats faced by a country, we will use the Global Terrorism Database, which looks at terrorist events from 1970 to 2020 from around the world (LaFree, Dugan, and Miller, n.d.).
 
 ## Operationalization and Measurement of Concepts
 
-For our definition of legitimacy, we will define it as the confidence citizens have in the state to conduct basic functions, which is the definition set by the FSI data set. The legitimacy indicator is scored between 1 and 10, where 10 is more likely to make the state fragile and the state is viewed as less legitimate.
+For our definition of legitimacy, we will define it as the confidence citizens have in the state to conduct basic functions, which is the definition set by the FSI data set.
+The legitimacy indicator is scored between 1 and 10, where 10 is more likely to make the state fragile and the state is viewed as less legitimate.
 
-RAI will give us a normalized measure of regional authority that a sub-national unit of government has. It takes both self-rule, the amount of authority exerted on people living within its region, and shared rule, meaning the amount of authority exerted over the whole country. We define regional authority as the level of authority a regional government has over its citizens.
+RAI will give us a normalized measure of regional authority that a sub-national unit of government has.
+It takes both self-rule, the amount of authority exerted on people living within its region, and shared rule, meaning the amount of authority exerted over the whole country.
+We define regional authority as the level of authority a regional government has over its citizens.
 
-Each regional government is scored on ten variables. The first five make up the self-rule metric: Institutional depth, policy autonomy, fiscal autonomy, borrowing autonomy, and independent representation. The latter five make up the shared rule measure: Law making, executive control, fiscal control, borrowing control, and determining constitutional change. RAI is then the sum of the self-rule and shared rule metrics. Self-rule is scored on a scale from 0-18, as a sum of the five metrics, and shared-rule is scored from 0-12 as a sum of its five metrics. RAI is then scored from 0-30 as a sum of self-rule and shared-rule. A large RAI value indicates an increased regional authority that the government exerts.
+Each regional government is scored on ten variables.
+The first five make up the self-rule metric: Institutional depth, policy autonomy, fiscal autonomy, borrowing autonomy, and independent representation.
+The latter five make up the shared rule measure: Law making, executive control, fiscal control, borrowing control, and determining constitutional change.
+RAI is then the sum of the self-rule and shared rule metrics.
+Self-rule is scored on a scale from 0-18, as a sum of the five metrics, and shared-rule is scored from 0-12 as a sum of its five metrics.
+RAI is then scored from 0-30 as a sum of self-rule and shared-rule.
+A large RAI value indicates an increased regional authority that the government exerts.
 
-For our control variables, we define the age of the regime as the length of time the regime has been in power. The more recent the regime, the more fragile it is, as an older regime would have had more time to develop more norms behind it. A greater length of time would then theoretically translate to an increase in legitimacy.
+For our control variables, we define the age of the regime as the length of time the regime has been in power.
+The more recent the regime, the more fragile it is, as an older regime would have had more time to develop more norms behind it.
+A greater length of time would then theoretically translate to an increase in legitimacy.
 
-Homogeneity is measured by fractionalization, or the likelihood that two people within a given area are from the same ethnic group. The data measures an estimate between zero, which means that all people are from the same ethnic group, and one, meaning that all people are from unique groups (Drazanova 2020). For our research, we expect that a population with a greater shared identity would see a government as more legitimate because they have a shared identity.
+Homogeneity is measured by fractionalization, or the likelihood that two people within a given area are from the same ethnic group.
+The data measures an estimate between zero, which means that all people are from the same ethnic group, and one, meaning that all people are from unique groups (Drazanova 2020).
+For our research, we expect that a population with a greater shared identity would see a government as more legitimate because they have a shared identity.
 
-We operationalize the economy of a country through GDP per capita. A larger GDP per capita will mean more economic success in a country. We would assume that a state that promotes economic growth and has economic success would be seen as more legitimate, so a larger GDP per capita would indicate a greater sense of legitimacy.
+We operationalize the economy of a country through GDP per capita.
+A larger GDP per capita will mean more economic success in a country.
+We would assume that a state that promotes economic growth and has economic success would be seen as more legitimate, so a larger GDP per capita would indicate a greater sense of legitimacy.
 
-For external threats, it is difficult to accurately measure, so we will use the definition of terrorist attacks on a given country. Terrorist attacks are one of the reasons a population can feel unsafe, and a large number of them or a high level of severity would theoretically impact the legitimacy of a state because the population expects the state to protect them. So, we can expect that an increase in terrorist attacks results in lower levels of legitimacy.
+For external threats, it is difficult to accurately measure, so we will use the definition of terrorist attacks on a given country.
+Terrorist attacks are one of the reasons a population can feel unsafe, and a large number of them or a high level of severity would theoretically impact the legitimacy of a state because the population expects the state to protect them.
+So, we can expect that an increase in terrorist attacks results in lower levels of legitimacy.
 
-# Works Cited 
+# Works Cited
 
 Alkan, Ayten.
 2011.
