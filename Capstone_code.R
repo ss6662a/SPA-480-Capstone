@@ -107,62 +107,42 @@ full_data <- reduce(
 # Generalized Synthetic Control (gsynth package)----
 
 # Ensure correct data types
-full_data2 <- full_data %>%
+full_data <- full_data %>%
   mutate(
     country = as.factor(country),
     year = as.numeric(year),
     gdp = as.numeric(str_replace_all(gdp, ",", ""))
   ) %>%
   arrange(country, year) %>%
-  distinct(country, year, .keep_all = TRUE)
+  distinct(country, year, .keep_all = TRUE) # gets rid of duplicates (there was at least one)
 
-colSums(is.na(full_data2))
+colSums(is.na(full_data))
 
-full_data_no_na <- full_data2 %>%
+full_data_no_na <- full_data %>%
   drop_na(c('change_from_prev_year', 'p1_state_legitimacy', 'ethnicity_index', 'years_since_regime_change')) %>% 
   filter(!(country %in% c("Guyana", "Trinidad and Tobago", "Serbia")))
+
 
 colSums(is.na(full_data_no_na))
 
 
-# ---- Viewing Dataset, to prepare for gsynth
-
+# ---- Treatment
 full_data_no_na %>% 
   filter(change_from_prev_year != 0) %>% 
-  summarize(mm = mean(change_from_prev_year))
-# when there is a change, the average change is about 0.4 (so 3 can represent a significant change)
+  summarize(m = mean(change_from_prev_year)) # what is the avg change in RAI (when there is a change)
+# when there is a change, the average change is about 0.3
+# useful for determining good level for treated countries
 
-panelview(p1_state_legitimacy ~ change_from_prev_year + gdp + ethnicity_index + years_since_regime_change, 
-          data = full_data2, 
-          index = c("country", "year"), 
-          pre.post =  TRUE)
+RAI_treat_level <- 2
 
+# ---- Increase in RAI
 
-panelview(p1_state_legitimacy ~ change_from_prev_year, 
-          data = full_data2, 
-          index = c("country", "year"), 
-          type = "outcome")
+full_data_w_treat1 <- full_data_no_na %>%
+  mutate(treated = if_else(abs(change_from_prev_year) > RAI_treat_level, 1, 0))
 
-RAI %>%
-  filter(!change_from_prev_year < -3 | !change_from_prev_year > 3) %>%
-  ggplot(aes(x = year, y = n_rai, color = country)) +
-  geom_line() +
-  theme(legend.position = "none") # graph
+full_data_w_treat1 %>% filter(treated == 1) %>% distinct(country)
 
-RAI %>%
-  filter(change_from_prev_year < -3 | change_from_prev_year > 3) %>%
-  ggplot(aes(x = year, y = n_rai, color = country)) +
-  geom_line() +
-  theme(legend.position = "none") # another graph
-
-
-
-# ---- Treatment
-
-full_data_w_treat <- full_data_no_na %>%
-  mutate(treated = if_else(abs(change_from_prev_year) > 3, 1, 0))
-
-treated_years <- full_data_w_treat %>%
+treated_years <- full_data_w_treat1 %>%
   filter(treated == 1) %>% 
   group_by(country) %>% 
   summarize(first_treat_year = min(year))
@@ -170,15 +150,38 @@ treated_years <- full_data_w_treat %>%
 full_data_no_na <- full_data_no_na %>%
   left_join(treated_years, by = "country") %>%
   mutate(post_treat = if_else(
-      !is.na(first_treat_year) & year >= first_treat_year, 1, 0))
-
-
-
+    !is.na(first_treat_year) & year >= first_treat_year, 1, 0))
 
 panelview(p1_state_legitimacy ~ post_treat, 
           data = full_data_no_na, 
           index = c("country", "year"), 
           pre.post = TRUE)
+
+# ---- Decrease in RAI
+
+full_data_w_treat2 <- full_data_no_na %>% 
+  mutate(treated = if_else(change_from_prev_year < (RAI_treat_level * -1), 1, 0))
+
+full_data_w_treat2 %>% filter(treated == 1) %>% distinct(country)
+
+treated_years <- full_data_w_treat2 %>%
+  filter(treated == 1) %>% 
+  group_by(country) %>% 
+  summarize(first_treat_year = min(year))
+
+full_data_no_na2 <- full_data_no_na %>%
+  left_join(treated_years, by = "country") %>%
+  mutate(post_treat = if_else(
+    !is.na(first_treat_year) & year >= first_treat_year, 1, 0))
+
+panelview(p1_state_legitimacy ~ post_treat, 
+          data = full_data_no_na2, 
+          index = c("country", "year"), 
+          pre.post = TRUE)
+
+
+# look at donor pool, restrcit big changes if that is substantive qurstion
+
 
 # ---- Gsynth
 
@@ -194,8 +197,20 @@ gsynth_out <- gsynth(
 
 
 plot(gsynth_out, type = 'counterfactual')
-plot(gsynth_out, type = 'gap')
 plot(gsynth_out, type = 'raw')
 
+
+test <- full_data_no_na %>% 
+  filter(year == 2011 & p1_state_legitimacy > 7.5 & p1_state_legitimacy < 9 |
+           year == 2012 & p1_state_legitimacy > 5 & p1_state_legitimacy < 7)
+
+
+
+
+# better off doing one country and doing the synthetic control for that country
+# understand the context of that country better
+# discussion is then how to do this for a broad set of countries
+
+# i decide paper goal, do not need to go too far
 
 
