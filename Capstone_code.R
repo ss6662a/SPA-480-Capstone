@@ -175,7 +175,7 @@ full_data_no_na2 <- full_data_no_na %>%
     !is.na(first_treat_year) & year >= first_treat_year, 1, 0))
 
 panelview(p1_state_legitimacy ~ post_treat, 
-          data = full_data_no_na2, 
+          data = full_data_no_na, 
           index = c("country", "year"), 
           pre.post = TRUE)
 
