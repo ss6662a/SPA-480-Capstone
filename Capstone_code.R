@@ -135,47 +135,71 @@ full_data_no_na %>%
 
 RAI_treat_level <- 2
 
-# ---- Increase in RAI
+# ---- Absolute change in RAI
 
-full_data_w_treat1 <- full_data_no_na %>%
+treated_data <- full_data_no_na %>%
   mutate(treated = if_else(abs(change_from_prev_year) > RAI_treat_level, 1, 0))
 
-full_data_w_treat1 %>% filter(treated == 1) %>% distinct(country)
+treated_data %>% filter(treated == 1) %>% distinct(country)
 
-treated_years <- full_data_w_treat1 %>%
+treated_years <- treated_data %>%
   filter(treated == 1) %>% 
   group_by(country) %>% 
   summarize(first_treat_year = min(year))
 
-full_data_no_na <- full_data_no_na %>%
+treated_data <- full_data_no_na %>%
   left_join(treated_years, by = "country") %>%
   mutate(post_treat = if_else(
     !is.na(first_treat_year) & year >= first_treat_year, 1, 0))
 
 panelview(p1_state_legitimacy ~ post_treat, 
-          data = full_data_no_na, 
+          data = treated_data, 
           index = c("country", "year"), 
           pre.post = TRUE)
 
-# ---- Decrease in RAI
+# ---- Increase in RAI
 
-full_data_w_treat2 <- full_data_no_na %>% 
-  mutate(treated = if_else(change_from_prev_year < (RAI_treat_level * -1), 1, 0))
+treated_data_inc <- full_data_no_na %>% 
+  mutate(treated = if_else(change_from_prev_year < RAI_treat_level, 1, 0))
 
-full_data_w_treat2 %>% filter(treated == 1) %>% distinct(country)
+treated_data_inc %>% filter(treated == 1) %>% distinct(country)
 
-treated_years <- full_data_w_treat2 %>%
+treated_years <- treated_data_inc %>%
   filter(treated == 1) %>% 
   group_by(country) %>% 
   summarize(first_treat_year = min(year))
 
-full_data_no_na2 <- full_data_no_na %>%
+treated_data_inc <- full_data_no_na %>%
   left_join(treated_years, by = "country") %>%
   mutate(post_treat = if_else(
     !is.na(first_treat_year) & year >= first_treat_year, 1, 0))
 
 panelview(p1_state_legitimacy ~ post_treat, 
-          data = full_data_no_na, 
+          data = treated_data_inc, 
+          index = c("country", "year"), 
+          pre.post = TRUE)
+
+
+
+# ---- Decrease in RAI
+
+treated_data_dec <- full_data_no_na %>% 
+  mutate(treated = if_else(change_from_prev_year < (RAI_treat_level * -1), 1, 0))
+
+treated_data_dec %>% filter(treated == 1) %>% distinct(country)
+
+treated_years <- treated_data_dec %>%
+  filter(treated == 1) %>% 
+  group_by(country) %>% 
+  summarize(first_treat_year = min(year))
+
+treated_data_dec <- full_data_no_na %>%
+  left_join(treated_years, by = "country") %>%
+  mutate(post_treat = if_else(
+    !is.na(first_treat_year) & year >= first_treat_year, 1, 0))
+
+panelview(p1_state_legitimacy ~ post_treat, 
+          data = treated_data_dec, 
           index = c("country", "year"), 
           pre.post = TRUE)
 
@@ -185,25 +209,40 @@ panelview(p1_state_legitimacy ~ post_treat,
 
 # ---- Gsynth
 
-gsynth_out <- gsynth(
+gsynth_out_abs <- gsynth(
   formula = p1_state_legitimacy ~ post_treat + gdp + ethnicity_index + years_since_regime_change,
-  data = full_data_no_na,
+  data = treated_data,
   index = c("country", "year"),
   force = "two-way",  # Includes country & time fixed effects
   CV = TRUE,          # Cross-validation
   r = c(0, 3)
   )
-# works, but removes 4 of 6 countries due to lack of pre-treatment data, more countries or more years?
 
+gsynth_out_inc <- gsynth(
+  formula = p1_state_legitimacy ~ post_treat + gdp + ethnicity_index + years_since_regime_change,
+  data = treated_data_inc,
+  index = c("country", "year"),
+  force = "two-way",  # Includes country & time fixed effects
+  CV = TRUE,          # Cross-validation
+  r = c(0, 3)
+)
 
-plot(gsynth_out, type = 'counterfactual')
-plot(gsynth_out, type = 'raw')
+gsynth_out_dec <- gsynth(
+  formula = p1_state_legitimacy ~ post_treat + gdp + ethnicity_index + years_since_regime_change,
+  data = treated_data_dec,
+  index = c("country", "year"),
+  force = "two-way",  # Includes country & time fixed effects
+  CV = TRUE,          # Cross-validation
+  r = c(0, 3)
+)
 
+# increase in RAI
+plot(gsynth_out_inc, type = 'counterfactual')
+plot(gsynth_out_inc, type = 'raw')
 
-test <- full_data_no_na %>% 
-  filter(year == 2011 & p1_state_legitimacy > 7.5 & p1_state_legitimacy < 9 |
-           year == 2012 & p1_state_legitimacy > 5 & p1_state_legitimacy < 7)
-
+# decrease in RAI
+plot(gsynth_out_dec, type = 'counterfactual')
+plot(gsynth_out_dec, type = 'raw')
 
 
 
@@ -213,5 +252,9 @@ test <- full_data_no_na %>%
 
 # i decide paper goal, do not need to go too far
 
-save(full_data, file = here("full_data.csv"))
+
+full_data %>% 
+  filter(country == "Nepal") %>% 
+  drop_na()
+
 
