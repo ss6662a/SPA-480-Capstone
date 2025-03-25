@@ -213,4 +213,5 @@ test <- full_data_no_na %>%
 
 # i decide paper goal, do not need to go too far
 
+save(full_data, file = here("full_data.csv"))
 
