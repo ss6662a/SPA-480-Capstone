@@ -16,7 +16,7 @@ library(Synth)
 library(gsynth)
 library(mice)
 library(panelView)
-library(stargazer)
+library(flextable)
 
 here()
 ```
@@ -196,11 +196,87 @@ So, we can expect that an increase in terrorist attacks results in lower levels 
 
 # Results
 
+```{r}
+#| label: Main Code
+
+source(here("Code", "00_read-data.R"))
+
+source(here("Code", "01_recode-variables.R"))
+
+source(here("Code", "02_gsynth_test.R"))
+
+```
+
+
 ## Preparing to Test
+
+We started by cleaning each data set and then joined them together. With this full data set, we identified key moments for different countries where the Regional Authority Index (RAI) dropped by a significant amount. The average change in regional authority between years was about `r full_data %>% filter(change_from_prev_year != 0) %>% summarize(m = round(mean(change_from_prev_year), 3))`. Using that information, we determined that a drop greater than `2` was considered as part of the treatment group for this test. We then filtered and mutated the data set to have identifiers on the treated countries and the years before and after the year of significant change.
+
+After removing countries with missing values our data set looks like:
+
+```{r}
+#| label: Panel View Plot
+#| include: true
+#| echo: false
+#| messsage: false
+#| warning: false
+
+
+source(here("Figs", "panel-view_plot.R"))
+
+
+
+```
+
+Due to lack of pretreatment data in some countries, we ran the analysis with two less countries. 
+
+## Test
+The generalized synthetic control resulted in an average treatment effect on the treated (ATT) of `r round(gsynth_out_dec$att.avg, 3)`. The means square prediction error was `r round(gsynth_out_dec$MSPE, 3)`.
+
+__need to put in covariate coefficients__
+
+```{r}
+#| label: Raw Plot
+#| include: true
+#| echo: false
+#| messsage: false
+#| warning: false
+
+
+source(here("Figs", "gsynth_raw_plot.R"))
+
+
+```
+
+
+## Analysis
 
 
 ```{r}
-stargazer(gsynth_out_dec, type = "html")
+#| label: Counterfacutal Plot
+#| include: true
+#| echo: false
+#| messsage: false
+#| warning: false
+
+source(here("Figs", "counterfactual-plot.R"))
+
+
+```
+
+
+## Analysis
+
+```{r}
+#| label: ATT Table
+#| include: true
+#| echo: false
+#| messsage: false
+#| warning: false
+
+source(here("Code", "03_gsynth_output.R"))
+
+att_table
 
 ```
 
