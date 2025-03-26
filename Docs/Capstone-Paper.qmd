@@ -16,6 +16,7 @@ library(Synth)
 library(gsynth)
 library(mice)
 library(panelView)
+library(stargazer)
 
 here()
 ```
@@ -191,6 +192,18 @@ We would assume that a state that promotes economic growth and has economic succ
 For external threats, it is difficult to accurately measure, so we will use the definition of terrorist attacks on a given country.
 Terrorist attacks are one of the reasons a population can feel unsafe, and a large number of them or a high level of severity would theoretically impact the legitimacy of a state because the population expects the state to protect them.
 So, we can expect that an increase in terrorist attacks results in lower levels of legitimacy.
+
+
+# Results
+
+## Preparing to Test
+
+
+```{r}
+stargazer(gsynth_out_dec, type = "html")
+
+```
+
 
 # Works Cited
 

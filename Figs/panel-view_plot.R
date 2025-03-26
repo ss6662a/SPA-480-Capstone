@@ -6,6 +6,5 @@ panel_view_data <- panelview(p1_state_legitimacy ~ post_treat,
           pre.post = TRUE)
 
 
-gsynth_counterfactual <- plot(gsynth_out_dec, type = 'counterfactual')
+save(panel_view_data, file = here("Figs"))
 
-gsynth_raw <- plot(gsynth_out_dec, type = 'raw')
