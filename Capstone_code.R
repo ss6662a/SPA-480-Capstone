@@ -5,7 +5,7 @@ library(Synth)
 library(gsynth)
 library(mice)
 library(panelView)
-here::here()
+here()
 
 
 # RAI Data ----
@@ -75,7 +75,7 @@ regime_change <- read_csv("SPA-480 Data/Political-Regime_Data.csv") %>%
            "year",
            "years_since_regime_change")
   ) %>%
-  na.omit()
+  na.omit
 
 
 # Global Terrorism Data ----
@@ -101,6 +101,9 @@ full_data <- reduce(
 # Synth Stuff trying to get the treatment and control groups----
 
 # need to use dataprep() to prep the data than can perform Synthetic control tests
+
+
+
 
 
 
