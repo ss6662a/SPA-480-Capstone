@@ -10,5 +10,4 @@ gsynth_out_dec <- gsynth(
   inference = "parametric"
 )
 
-
-
+gsynth_out_dec

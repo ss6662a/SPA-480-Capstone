@@ -75,4 +75,20 @@ regime_change <- read_csv(here("Data", "Political-Regime_Data.csv")) %>%
 
 # Global Terrorism ----
 
-# tbd
+GTI <- read_csv(here("Data", "Global-Terrorism-Data.csv")) %>% 
+  select(c(1, seq(3, 30, by = 2))) %>% 
+  drop_na() %>% 
+  row_to_names(row_number = 1) %>% 
+  pivot_longer(cols = !(country),
+               names_to = "year",
+               values_to = "GTI") %>% 
+  mutate(year = str_replace(year, " score", "")) %>% 
+  mutate(
+    year = as.numeric(year),
+    GTI = as.numeric(GTI)
+  )
+
+
+
+
+

@@ -9,16 +9,12 @@ editor:
 ---
 
 ```{r}
-library(tidyverse)
-library(purrr)
-library(here)
-library(Synth)
-library(gsynth)
-library(mice)
-library(panelView)
-library(flextable)
+#| label: Load Packages
 
-here()
+library(here)
+
+source(here("Code", "00_load-libraries.R"))
+
 ```
 
 # Literature Review
@@ -197,13 +193,13 @@ So, we can expect that an increase in terrorist attacks results in lower levels 
 # Results
 
 ```{r}
-#| label: Main Code
+#| label: Main Gsynth Code
 
-source(here("Code", "00_read-data.R"))
+source(here("Code", "01_read-data.R"))
 
-source(here("Code", "01_recode-variables.R"))
+source(here("Code", "02_recode-variables.R"))
 
-source(here("Code", "02_gsynth_test.R"))
+source(here("Code", "03_gsynth_test.R"))
 
 ```
 
@@ -274,11 +270,29 @@ source(here("Figs", "counterfactual-plot.R"))
 #| messsage: false
 #| warning: false
 
-source(here("Code", "03_gsynth_output.R"))
+source(here("Code", "04_gsynth_output.R"))
 
 att_table
 
 ```
+
+
+
+
+# Ireland synth --- WORK IN PROGRESS ---
+
+```{r}
+#| label: Ireland Synth
+
+source(here("Code", "07_ireland-synth-test.R"))
+source(here("Code", "08_ireland-synth-results.R"))
+
+ireland_synth_table
+
+ireland_synth_path
+
+```
+
 
 
 # Works Cited

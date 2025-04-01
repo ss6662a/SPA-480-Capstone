@@ -122,7 +122,7 @@ full_data <- full_data %>%
 colSums(is.na(full_data))
 
 full_data_no_na <- full_data %>%
-  drop_na(c('change_from_prev_year', 'p1_state_legitimacy', 'ethnicity_index', 'years_since_regime_change')) %>% 
+  drop_na(c('change_from_prev_year', 'p1_state_legitimacy', 'years_since_regime_change')) %>% 
   filter(!(country %in% c("Guyana", "Trinidad and Tobago", "Serbia")))
 
 

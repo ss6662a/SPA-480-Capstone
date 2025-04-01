@@ -4,8 +4,10 @@ att_table <- data.frame(
   ATT = round(gsynth_out_dec$att, 4)
 )
 
-att_table <- flextable(att_table) %>% 
+att_table <- flextable(att_table) %>%
   autofit()
 
 
+
 # output <- stargazer(gsynth_out_dec, type = 'html')
+
