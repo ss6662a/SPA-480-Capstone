@@ -194,6 +194,8 @@ So, we can expect that an increase in terrorist attacks results in lower levels 
 
 ```{r}
 #| label: Main Gsynth Code
+#| warning: false
+#| message: false
 
 source(here("Code", "01_read-data.R"))
 
@@ -257,6 +259,7 @@ source(here("Figs", "gsynth_raw_plot.R"))
 
 source(here("Figs", "counterfactual-plot.R"))
 
+gsynth_counterfactual
 
 ```
 

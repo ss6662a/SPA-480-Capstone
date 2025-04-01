@@ -7,7 +7,5 @@ att_table <- data.frame(
 att_table <- flextable(att_table) %>%
   autofit()
 
-
-
 # output <- stargazer(gsynth_out_dec, type = 'html')
 
