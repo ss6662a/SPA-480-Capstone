@@ -21,4 +21,13 @@ ireland_synth_gap <- gaps.plot(
   dataprep.res = ireland_prepped_data
 )
 
-ireland_synth_table
+
+
+
+# tab.pred table
+ire_tbl <- as.data.frame(ireland_synth_table$tab.pred)
+ire_tbl <- cbind(Variable = rownames(ire_tbl), ire_tbl)
+
+flextable(ire_tbl) %>%
+  set_header_labels(Variable = "")
+
