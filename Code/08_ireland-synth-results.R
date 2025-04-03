@@ -32,3 +32,10 @@ ire_tbl <- cbind(Variable = rownames(ire_tbl), ire_tbl)
 flextable(ire_tbl) %>%
   set_header_labels(Variable = "")
 
+
+
+ire_tbl <- as.data.frame(ireland_synth_table$tab.w)
+
+flextable(ire_tbl) %>%
+  set_header_labels(Variable = "")
+
