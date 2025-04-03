@@ -5,6 +5,7 @@ ireland_synth_table <- synth.tab(
   synth.res = ireland_synth,
   dataprep.res = ireland_prepped_data
 )
+ireland_synth_table
 
 ireland_synth_path <- path.plot(
   synth.res = ireland_synth,

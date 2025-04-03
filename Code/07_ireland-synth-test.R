@@ -30,21 +30,38 @@ na_countries = c(9, 27, 28, 31, 35, 43, 47, 56, 68, 75)
 ireland_treat <- ireland_treat %>% 
   filter(!country_id %in% na_countries)
 
-control_countries = setdiff(1:76, c(na_countries, na_first_year, 37)) #37 is ireland (treated unit)
+
+control_countries = c("Finland",
+                      "Slovenia", 
+                      "New Zealand", 
+                      "Albania", 
+                      "Chile",
+                      "Singapore",
+                      "Australia",
+                      "Lithuania",
+                      "Denmark")
+
+
+ireland_treat %>% 
+  filter(country %in% control_countries) %>% 
+  distinct(country, country_id)
+
+control_country_ids <- c(1, 3, 14, 21, 26, 42, 51, 64, 65)
+
 
 
 ireland_prepped_data <- dataprep(
   foo = as.data.frame(ireland_treat),
   
-  predictors = c("n_rai", "n_sharedrule", "n_selfrule"),
+  predictors = c("n_rai", "n_selfrule"),
   
   predictors.op = "mean",
   
   special.predictors = list(
     list("gdp", 2006:2018, "mean"),
     list("years_since_regime_change", 2006:2018, "mean"),
-    list("ethnicity_index", 2006:2013, "mean")#,
-    #list("GTI", 2011:2018, "mean") # currently have zero values making the synth not run...need to figure out how to fix
+    list("ethnicity_index", 2006:2013, "mean"),
+    list("GTI", 2011:2018, "mean") # currently have zero values making the synth not run...need to figure out how to fix
   ),
   
   dependent = "p1_state_legitimacy",
@@ -56,7 +73,7 @@ ireland_prepped_data <- dataprep(
   
   treatment.identifier = 37,
   
-  controls.identifier = control_countries,
+  controls.identifier = control_country_ids,
   
   time.predictors.prior = c(2006:2014),
   
@@ -65,5 +82,5 @@ ireland_prepped_data <- dataprep(
 )
 
 ireland_synth <- synth(ireland_prepped_data)
-
+ireland_synth
 
