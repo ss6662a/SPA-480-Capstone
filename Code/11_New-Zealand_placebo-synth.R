@@ -122,7 +122,7 @@ ggplot(synth_long, aes(x = year, y = legitimacy, linetype = type)) +
     title = "Synthetic Control - New Zealand",
     y = "Legitimacy",
     x = "Year",
-    caption = "Figure 5"
+    caption = "Figure 3"
   ) +
   theme_minimal() +
   theme(

@@ -32,7 +32,7 @@ ggplot(gap_df, aes(x = year, y = gap, group = unit)) +
     title = "Gap Between Treated/Placebo Units and Their Synthetic Models",
     y = "Gap (Actual - Synthetic Legitimacy)",
     x = "Year",
-    caption = "Figure 6"
+    caption = "Figure 4"
   ) +
   scale_y_reverse() +
   theme_minimal()
