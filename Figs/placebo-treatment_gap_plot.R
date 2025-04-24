@@ -34,6 +34,7 @@ ggplot(gap_df, aes(x = year, y = gap, group = unit)) +
     x = "Year",
     caption = "Figure 6"
   ) +
+  scale_y_reverse() +
   theme_minimal()
 
 
