@@ -11,7 +11,7 @@ full_data <- reduce(
   by = c("country", "year")
 ) %>%
   mutate(
-    country = as.factor(country),
+    country = fct(country),
     year = as.numeric(year),
     gdp = as.numeric(str_replace_all(gdp, ",", ""))
   ) %>%

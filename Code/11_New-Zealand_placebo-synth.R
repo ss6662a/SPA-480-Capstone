@@ -99,3 +99,72 @@ nz_synth_path <- path.plot(
   Main = "Synthetic Control - New Zealand"
 )
 
+# ggplot version with reversed y axis ----
+actual <- nz_prepped_data$Y1plot
+synthetic <- nz_prepped_data$Y0plot %*% nz_synth$solution.w
+years <- nz_prepped_data$tag$time.plot
+
+synth_df <- data.frame(
+  year = years,
+  actual = as.numeric(actual),
+  synthetic = as.numeric(synthetic)
+)
+
+synth_long <- synth_df %>%
+  pivot_longer(cols = c("actual", "synthetic"), names_to = "type", values_to = "legitimacy")
+
+
+ggplot(synth_long, aes(x = year, y = legitimacy, linetype = type)) +
+  geom_line(size = 1.2) +
+  geom_vline(xintercept = 2014, linetype = "dotted", size = 1) +
+  scale_y_reverse() +
+  labs(
+    title = "Synthetic Control - New Zealand",
+    y = "Legitimacy",
+    x = "Year",
+    caption = "Figure 5"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    plot.caption = element_text(size = 10, hjust = 1)
+  )
+
+
+
+
+
+
+nz_synth_gap <- gaps.plot(
+  synth.res = nz_synth,
+  dataprep.res = nz_prepped_data
+)
+
+
+nz_gaps <- nz_prepped_data$Y1plot - (nz_prepped_data$Y0plot %*% nz_synth$solution.w)
+nz_gaps_pre <- nz_gaps[1:8, 1]
+nz_gaps_post <- nz_gaps[9:13, 1]
+
+nz_gaps_pre_avg <- mean(nz_gaps_pre) 
+nz_gaps_post_avg <- mean(nz_gaps_post)
+
+flextable(as.data.frame(cbind(
+  Year = rownames(as.data.frame(nz_gaps_pre)), 
+  nz_gaps_pre)))
+
+flextable(as.data.frame(cbind(
+  Year = rownames(as.data.frame(nz_gaps_post)), 
+  nz_gaps_post)))
+
+
+nz_gaps_post_avg - nz_gaps_pre_avg
+
+
+
+# Differences of Pre and Post treatment values ----
+ireland_gaps_pre_avg - nz_gaps_pre_avg
+
+
+ireland_gaps_post_avg - nz_gaps_post_avg
+
+

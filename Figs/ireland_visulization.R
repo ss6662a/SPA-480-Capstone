@@ -15,17 +15,20 @@ ireland_leg_plot <- ireland_treat %>%
     size = 3,
     color = "blue"
   ) +
+  theme_minimal() +
   labs(
     title = "Ireland Legitimacy by Year",
     x = "Year",
     y = "Legitimacy",
-    caption = "A lower score indicates a less fragile, more legitimate state"
+    caption = "Figure 1"
   ) +
   theme(
-    plot.caption = element_text(hjust = 0),
+    plot.caption = element_text(hjust = 0.95, size = 12),
     plot.title = element_text(hjust = 0.5)
   ) +
-  scale_x_continuous(breaks = seq(2006, 2018, by = 2))
+  scale_x_continuous(breaks = seq(2006, 2018, by = 2)) +
+  scale_y_reverse()
+  
 
 ireland_leg_plot
 
@@ -46,6 +49,7 @@ ireland_rai_plot <- ireland_treat %>%
            size = 3,
            color = "blue"
   ) +
+  theme_minimal() +
   labs(
     title = "Ireland RAI by Year",
     x = "Year",
